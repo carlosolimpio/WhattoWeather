@@ -1,15 +1,11 @@
 package com.olimpio.whattoweather.data.repository
 
-import com.olimpio.whattoweather.data.data_source.WeatherRemoteDataSource
+import com.olimpio.whattoweather.data.network.response.WeatherResult
+import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 import com.olimpio.whattoweather.presentation.weather.repository.WeatherRepository
 import com.olimpio.whattoweather.util.LatLng
 
-class WeatherRepositoryImpl : WeatherRepository {
-    private val remoteDataSource = WeatherRemoteDataSource()
-
-    override fun getCurrentWeather(coordinate: LatLng) =
-        remoteDataSource.getWeeklyWeather(coordinate.latitude, coordinate.longitude)[0]
-
-    override fun getWeeklyWeather(coordinate: LatLng) =
-        remoteDataSource.getWeeklyWeather(coordinate.latitude, coordinate.longitude)
+class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : WeatherRepository {
+    override fun getWeeklyWeather(coordinate: LatLng, weatherCallback: (result: WeatherResult) -> Unit) =
+        remoteDataSource.getWeeklyWeather(coordinate.latitude, coordinate.longitude, weatherCallback)
 }

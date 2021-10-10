@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import com.olimpio.whattoweather.data.data_source.WeatherRemoteDataSource
+import com.olimpio.whattoweather.data.repository.WeatherRepositoryImpl
 import com.olimpio.whattoweather.databinding.ActivityMainBinding
+import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 
 class WeatherActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -14,19 +17,17 @@ class WeatherActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel: WeatherViewModel = ViewModelProvider(this).get(WeatherViewModel::class.java)
+        val repo = WeatherRepositoryImpl(WeatherRemoteDataSource())
 
-        viewModel.weatherLiveData.observe(this) { weather ->
-//            binding.textTest.text = weather.toString()
-            Log.d("olimpio", "onCreate: $weather")
-        }
+        val viewModel = ViewModelProvider(
+                this,
+                WeatherViewModel.WeatherViewModelFactory(application, repo))
+            .get(WeatherViewModel::class.java)
 
         viewModel.weeklyWeatherLiveData.observe(this) { weeklyWeather ->
             Log.d("olimpio", "onCreate: $weeklyWeather")
-
         }
 
-        viewModel.getCurrentWeather("recife")
         viewModel.getWeeklyWeather("recife")
     }
 

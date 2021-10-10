@@ -4,39 +4,36 @@ import android.util.Log
 import com.olimpio.whattoweather.data.network.api.RetrofitManager
 import com.olimpio.whattoweather.data.network.model.Weather
 import com.olimpio.whattoweather.data.network.response.WeatherForecast
+import com.olimpio.whattoweather.data.network.response.WeatherResult
 import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class WeatherRemoteDataSource : WeatherDataSource {
-
-    override fun getWeeklyWeather(lat: Double, lng: Double) = fetchWeatherFromApi(lat, lng)
-
-    private fun fetchWeatherFromApi(lat: Double, lng: Double): List<Weather> {
+    override fun getWeeklyWeather(lat: Double, lng: Double, weatherCallback: (result: WeatherResult) -> Unit) {
         lateinit var currentWeather: Weather
-        var weeklyWeather: List<Weather> = listOf()
+        var weeklyWeather: List<Weather>
 
         RetrofitManager.getOpenWeatherService()
             .getCurrentWeatherForLocationCoordinates(lat, lng)
             .enqueue(object : Callback<WeatherForecast> {
                 override fun onResponse(
-                    call: Call<WeatherForecast>,
-                    response: Response<WeatherForecast>
-                ) {
+                    call: Call<WeatherForecast>, response: Response<WeatherForecast>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
                             currentWeather = buildCurrentWeather(it)
                             weeklyWeather = buildWeeklyWeather(it, currentWeather)
+                            weatherCallback(WeatherResult.Success(weeklyWeather))
                         }
-                    }
+                    } else weatherCallback(WeatherResult.ApiError(response.code()))
                 }
 
                 override fun onFailure(call: Call<WeatherForecast>, t: Throwable) {
                     Log.d("olimpio", "onFailure: $t")
+                    weatherCallback(WeatherResult.ServerError)
                 }
             })
-        return weeklyWeather
     }
 
     private fun buildCurrentWeather(response: WeatherForecast): Weather {
