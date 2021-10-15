@@ -2,34 +2,49 @@ package com.olimpio.whattoweather.presentation.weather
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.lifecycle.ViewModelProvider
-import com.olimpio.whattoweather.data.data_source.WeatherRemoteDataSource
-import com.olimpio.whattoweather.data.repository.WeatherRepositoryImpl
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import com.google.android.material.navigation.NavigationView
+import com.olimpio.whattoweather.R
 import com.olimpio.whattoweather.databinding.ActivityMainBinding
-import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 
 class WeatherActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repo = WeatherRepositoryImpl(WeatherRemoteDataSource())
+        navController = findNavController(R.id.navHostFragment)
+        drawerLayout = binding.drawerLayout
 
-        val viewModel = ViewModelProvider(
-                this,
-                WeatherViewModel.WeatherViewModelFactory(application, repo))
-            .get(WeatherViewModel::class.java)
-
-        viewModel.weeklyWeatherLiveData.observe(this) { weeklyWeather ->
-            Log.d("olimpio", "onCreate: $weeklyWeather")
-        }
-
-        viewModel.getWeeklyWeather("recife")
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+        NavigationUI.setupWithNavController(binding.navView, navController)
+        binding.navView.setNavigationItemSelectedListener(getNavigationItemSelectedListener())
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(navController, drawerLayout)
+    }
 
+    private fun getNavigationItemSelectedListener(): NavigationView.OnNavigationItemSelectedListener {
+        return NavigationView.OnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+//                R.id. -> {
+//                    Log.d(TAG, "getNavigationItemSelectedListener: item1")
+//                    true
+//                }
+//                R.id.item_edituser_profile -> {
+//                    Log.d(TAG, "getNavigationItemSelectedListener: item2")
+//                    true
+//                }
+                else -> false
+            }
+        }
+    }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+<!--
+    <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/image_user_profile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="24dp"
+        android:background="@color/transparent_shade"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:roundPercent="1"
+        app:srcCompat="@drawable/levi" />
+
+    <TextView
+        android:id="@+id/text_user_name"
+        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Levi Akerman"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/image_user_profile"
+        app:layout_constraintTop_toBottomOf="@+id/image_user_profile" />
+
+    <TextView
+        android:id="@+id/text_user_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="levi_ak@aot.com"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/text_user_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_user_name" />
+
+    <ImageView
+        android:id="@+id/badge_picture"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="65dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toStartOf="@+id/image_user_profile"
+        app:layout_constraintTop_toTopOf="@+id/image_user_profile"
+        app:srcCompat="@drawable/survey_badge" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>

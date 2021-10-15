@@ -13,7 +13,7 @@ import retrofit2.Response
 class WeatherRemoteDataSource : WeatherDataSource {
     override fun getWeeklyWeather(lat: Double, lng: Double, weatherCallback: (result: WeatherResult) -> Unit) {
         lateinit var currentWeather: Weather
-        var weeklyWeather: List<Weather>
+        lateinit var weeklyWeather: List<Weather>
 
         RetrofitManager.getOpenWeatherService()
             .getCurrentWeatherForLocationCoordinates(lat, lng)
