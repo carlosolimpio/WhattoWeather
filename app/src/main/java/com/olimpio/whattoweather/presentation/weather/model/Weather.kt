@@ -10,5 +10,6 @@ data class Weather(
     var tempMax: String,
     var tempMin: String,
     var windSpeed: String,
-    var icon: Int
+    var icon: Int,
+    var color: Int
 )

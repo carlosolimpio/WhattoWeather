@@ -8,6 +8,7 @@
     <fragment
         android:id="@+id/currentWeatherFragment"
         android:name="com.olimpio.whattoweather.presentation.weather.CurrentWeatherFragment"
+        app:backgroundColor="@color/white"
         android:label="CurrentWeatherFragment"
         tools:layout="@layout/fragment_current_weather" />
 </navigation>

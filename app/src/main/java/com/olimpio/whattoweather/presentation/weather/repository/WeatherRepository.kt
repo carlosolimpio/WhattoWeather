@@ -1,9 +1,7 @@
 package com.olimpio.whattoweather.presentation.weather.repository
 
-import com.olimpio.whattoweather.data.network.model.Weather
-import com.olimpio.whattoweather.data.network.response.WeatherResult
-import com.olimpio.whattoweather.util.LatLng
+import com.olimpio.whattoweather.presentation.weather.response.WeatherResult
 
 interface WeatherRepository {
-    fun getWeeklyWeather(coordinate: LatLng, weatherCallback: (result: WeatherResult) -> Unit)
+    fun getWeeklyWeather(city: String, weatherCallback: (result: WeatherResult) -> Unit)
 }
