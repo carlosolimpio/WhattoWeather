@@ -19,11 +19,11 @@ class LocationDataSourceImpl(private val fusedLocationClient: FusedLocationProvi
         fusedLocationClient.getCurrentLocation(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, null)
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             coord = if (location != null) {
-                Log.d("olimpio", "LocationDataSourceImpl: lat=${location.latitude} + lng=${location.longitude}")
+                Log.d("olimpio", "getCurrentLocation: lat=${location.latitude} + lng=${location.longitude}")
                 LatLng(location.latitude, location.longitude)
             } else {
                 // null = location is off or device has never recorded a location or google play services restarted
-                Log.d("olimpio", "onCreate: location = null")
+                Log.d("olimpio", "getCurrentLocation: location = null")
                 LatLng(0.0,0.0)
             }
         }

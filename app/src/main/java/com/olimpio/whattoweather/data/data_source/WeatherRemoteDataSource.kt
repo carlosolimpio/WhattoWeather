@@ -8,19 +8,23 @@ import com.olimpio.whattoweather.data.network.response.WeatherForecast
 import com.olimpio.whattoweather.data.network.response.APIResult
 import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 import com.olimpio.whattoweather.data.util.LocationConverter
+import com.olimpio.whattoweather.util.City
+import com.olimpio.whattoweather.util.LatLng
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource {
-    override fun getWeeklyWeather(city: String, responseCallback: (result: APIResult) -> Unit) {
+    override fun getWeeklyWeather(city: City, responseCallback: (result: APIResult) -> Unit) {
         lateinit var currentWeatherResponse: WeatherResponse
         lateinit var weeklyWeatherResponse: List<WeatherResponse>
 
-        val coord = parseCoordinateFromCityName(city, context)
+        val coord = parseLocationCoordinate(city, context)
+
+        Log.d("olimpio", "getWeeklyWeather: $coord")
 
         RetrofitManager.getOpenWeatherService()
-            .getCurrentWeatherForLocationCoordinates(coord.latitude, coord.longitude)
+            .getCurrentWeatherForLocationCoordinates(coord.coord.latitude, coord.coord.longitude)
             .enqueue(object : Callback<WeatherForecast> {
                 override fun onResponse(
                     call: Call<WeatherForecast>, response: Response<WeatherForecast>) {
@@ -40,8 +44,24 @@ class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource 
             })
     }
 
-    private fun parseCoordinateFromCityName(city: String, context: Context) =
-        LocationConverter.convertCityNameToLatLng(context, city)
+    private fun parseLocationCoordinate(city: City, context: Context) : City {
+        var cityObject = City()
+
+        when {
+            city.name.isNotBlank() -> {
+                cityObject.name = city.name
+                cityObject.coord = LocationConverter.convertCityNameToLatLng(context, city.name)
+            }
+            LatLng.isValidCoord(city.coord.latitude, city.coord.longitude) -> {
+                val coordinate = LatLng(city.coord.latitude, city.coord.longitude)
+                cityObject.coord = coordinate
+                cityObject.name = LocationConverter.convertLatLngToCityName(context, coordinate)
+            }
+        }
+
+        return cityObject
+    }
+
 
     private fun buildCurrentWeather(response: WeatherForecast): WeatherResponse {
         return WeatherResponse(

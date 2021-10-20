@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.olimpio.whattoweather.data.data_source.LocationDataSourceImpl
 import com.olimpio.whattoweather.data.data_source.WeatherRemoteDataSource
@@ -19,8 +18,8 @@ import com.olimpio.whattoweather.data.repository.LocationRepositoryImpl
 import com.olimpio.whattoweather.data.repository.WeatherRepositoryImpl
 import com.olimpio.whattoweather.databinding.FragmentCurrentWeatherBinding
 import com.olimpio.whattoweather.presentation.location.LocationViewModel
-import com.olimpio.whattoweather.presentation.location.repository.LocationRepository
 import com.olimpio.whattoweather.presentation.weather.model.Weather
+import com.olimpio.whattoweather.util.City
 
 class CurrentWeatherFragment : Fragment() {
     private lateinit var binding: FragmentCurrentWeatherBinding
@@ -54,17 +53,16 @@ class CurrentWeatherFragment : Fragment() {
             this,
             LocationViewModel.LocationViewModelFactory(locRepository)).get(LocationViewModel::class.java)
 
-        val city = "Chã grande"
-
         weatherViewModel.weeklyWeatherLiveData.observe(viewLifecycleOwner) { weeklyWeather ->
             Log.d("olimpio", "onCreate: $weeklyWeather")
             setUpCurrentWeatherViews(weeklyWeather[0])
         }
 
         locationViewModel.locationLiveData.observe(viewLifecycleOwner) { coord ->
-            Log.d("olimpio", "onViewCreated: coordenadas=${coord.toString()}")
+            Log.d("olimpio", "onViewCreated: coordenadas=${coord}")
         }
 
+        val city = City("Garanhuns")
         weatherViewModel.getWeeklyWeather(city)
 
         val requestPermissionLauncher = registerForActivityResult(
@@ -97,7 +95,7 @@ class CurrentWeatherFragment : Fragment() {
     private fun setUpCurrentWeatherViews(weather: Weather) {
         binding.apply {
             textDate.text = weather.date
-            textCityName.text = weather.city
+            textCityName.text = weather.cityName
             textWeatherDescription.text = weather.description
             textTemperature.text = weather.temperature
             textPrecipitation.text = weather.precipitation

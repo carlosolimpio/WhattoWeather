@@ -6,11 +6,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.olimpio.whattoweather.presentation.weather.model.Weather
 import com.olimpio.whattoweather.presentation.weather.repository.WeatherRepository
 import com.olimpio.whattoweather.presentation.weather.response.WeatherResult.*
+import com.olimpio.whattoweather.util.City
 
 class WeatherViewModel(private val weatherRepository: WeatherRepository) : ViewModel() {
     val weeklyWeatherLiveData: MutableLiveData<List<Weather>> = MutableLiveData()
 
-    fun getWeeklyWeather(city: String) {
+    fun getWeeklyWeather(city: City) {
         weatherRepository.getWeeklyWeather(city) { result ->
             when (result) {
                 is Success -> {

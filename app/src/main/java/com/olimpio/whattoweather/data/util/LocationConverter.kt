@@ -13,4 +13,12 @@ object LocationConverter {
             LatLng(addr[0].latitude, addr[0].longitude)
         } else LatLng(0.0, 0.0) //error
     }
+
+    fun convertLatLngToCityName(context: Context, coord: LatLng): String {
+        return if (Geocoder.isPresent()) {
+            val geo = Geocoder(context, Locale.getDefault())
+            val addr = geo.getFromLocation(coord.latitude, coord.longitude, 1)
+            addr[0].getAddressLine(0)
+        } else ""
+    }
 }
