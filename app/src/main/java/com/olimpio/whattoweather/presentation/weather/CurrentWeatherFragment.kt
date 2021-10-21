@@ -13,7 +13,7 @@ import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.LocationServices
 import com.olimpio.whattoweather.data.data_source.LocationDataSourceImpl
-import com.olimpio.whattoweather.data.data_source.WeatherRemoteDataSource
+import com.olimpio.whattoweather.data.data_source.WeatherRemoteDataSourceImpl
 import com.olimpio.whattoweather.data.repository.LocationRepositoryImpl
 import com.olimpio.whattoweather.data.repository.WeatherRepositoryImpl
 import com.olimpio.whattoweather.databinding.FragmentCurrentWeatherBinding
@@ -25,6 +25,7 @@ class CurrentWeatherFragment : Fragment() {
     private lateinit var binding: FragmentCurrentWeatherBinding
 
     private lateinit var locationViewModel: LocationViewModel
+    private lateinit var weatherViewModel: WeatherViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,22 +38,53 @@ class CurrentWeatherFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val weatherRepository = WeatherRepositoryImpl(WeatherRemoteDataSource(requireContext()))
-        val weatherViewModel = ViewModelProvider(
+        checkPermissions()
+        initViewModels()
+        observeViewModels()
+
+        val city = City("Garanhuns")
+        weatherViewModel.getWeeklyWeather(city)
+    }
+
+    private fun setUpCurrentWeatherViews(weather: Weather) {
+        binding.apply {
+            textDate.text = weather.date
+            textCityName.text = weather.cityName
+            textWeatherDescription.text = weather.description
+            textTemperature.text = weather.temperature
+            textPrecipitation.text = weather.precipitation
+            textFeelsLikeValue.text = weather.feelsLike
+            textTempMax.text = weather.tempMax
+            textTempMin.text = weather.tempMin
+            textWindSpeed.text = weather.windSpeed
+            iconClothe.setImageResource(weather.icon)
+        }
+
+        // TODO: see here
+        binding.textCityName.setOnClickListener { locationViewModel.updateCurrentLocation() }
+    }
+
+    private fun initViewModels() {
+        // TODO: create a Repository and DataSource providers
+        val weatherRepository = WeatherRepositoryImpl(WeatherRemoteDataSourceImpl(requireContext()))
+
+        val locRepository = LocationRepositoryImpl(
+            LocationDataSourceImpl(LocationServices.getFusedLocationProviderClient(requireActivity()))
+        )
+
+        weatherViewModel = ViewModelProvider(
             this,
             WeatherViewModel.WeatherViewModelFactory(weatherRepository))
             .get(WeatherViewModel::class.java)
 
-        val locRepository = LocationRepositoryImpl(
-            LocationDataSourceImpl(
-                LocationServices.getFusedLocationProviderClient(requireActivity())
-            )
-        )
-
         locationViewModel = ViewModelProvider(
             this,
-            LocationViewModel.LocationViewModelFactory(locRepository)).get(LocationViewModel::class.java)
+            LocationViewModel.LocationViewModelFactory(locRepository))
+            .get(LocationViewModel::class.java)
+    }
 
+    private fun observeViewModels() {
+        // Observe
         weatherViewModel.weeklyWeatherLiveData.observe(viewLifecycleOwner) { weeklyWeather ->
             Log.d("olimpio", "onCreate: $weeklyWeather")
             setUpCurrentWeatherViews(weeklyWeather[0])
@@ -61,10 +93,9 @@ class CurrentWeatherFragment : Fragment() {
         locationViewModel.locationLiveData.observe(viewLifecycleOwner) { coord ->
             Log.d("olimpio", "onViewCreated: coordenadas=${coord}")
         }
+    }
 
-        val city = City("Garanhuns")
-        weatherViewModel.getWeeklyWeather(city)
-
+    private fun checkPermissions() {
         val requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -90,23 +121,5 @@ class CurrentWeatherFragment : Fragment() {
             requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
             return
         }
-    }
-
-    private fun setUpCurrentWeatherViews(weather: Weather) {
-        binding.apply {
-            textDate.text = weather.date
-            textCityName.text = weather.cityName
-            textWeatherDescription.text = weather.description
-            textTemperature.text = weather.temperature
-            textPrecipitation.text = weather.precipitation
-            textFeelsLikeValue.text = weather.feelsLike
-            textTempMax.text = weather.tempMax
-            textTempMin.text = weather.tempMin
-            textWindSpeed.text = weather.windSpeed
-            iconClothe.setImageResource(weather.icon)
-        }
-
-        // see here
-        binding.textCityName.setOnClickListener { locationViewModel.updateCurrentLocation() }
     }
 }

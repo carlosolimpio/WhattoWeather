@@ -14,14 +14,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource {
+class WeatherRemoteDataSourceImpl(private val context: Context) : WeatherDataSource {
     override fun getWeeklyWeather(city: City, responseCallback: (result: APIResult) -> Unit) {
         lateinit var currentWeatherResponse: WeatherResponse
         lateinit var weeklyWeatherResponse: List<WeatherResponse>
 
         val coord = parseLocationCoordinate(city, context)
-
-        Log.d("olimpio", "getWeeklyWeather: $coord")
 
         RetrofitManager.getOpenWeatherService()
             .getCurrentWeatherForLocationCoordinates(coord.coord.latitude, coord.coord.longitude)
@@ -45,7 +43,7 @@ class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource 
     }
 
     private fun parseLocationCoordinate(city: City, context: Context) : City {
-        var cityObject = City()
+        val cityObject = City()
 
         when {
             city.name.isNotBlank() -> {

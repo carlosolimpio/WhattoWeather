@@ -39,7 +39,7 @@ class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : W
         weeklyWeatherResponse.forEach { weather ->
             weatherList.add(
                 Weather(
-                    date = getCurrentDate(), // need improvement for the next 7 days
+                    date = getCurrentDate(), // TODO: need improvement for the next 7 days
                     cityName = city.capitalize(),
                     description = weather.description.capitalize(),
                     temperature = weather.temperature.roundToInt().toString(),
