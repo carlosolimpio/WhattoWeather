@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68.1dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="5sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Sábado, 14 de março" />
+
+    <ImageView
+        android:id="@+id/icon_location"
+        android:layout_width="17dp"
+        android:layout_height="23.7dp"
+        android:layout_marginEnd="7dp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_cityName"
+        app:layout_constraintEnd_toStartOf="@+id/text_cityName"
+        app:layout_constraintTop_toTopOf="@+id/text_cityName"
+        app:srcCompat="@drawable/location_pin" />
+
+    <TextView
+        android:id="@+id/text_cityName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="19dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:lineSpacingExtra="8sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="34sp"
+        android:textStyle="normal"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_date"
+        tools:text="Recife" />
+
+    <TextView
+        android:id="@+id/text_weather_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:lineSpacingExtra="4sp"
+        android:textColor="@color/pale_gold"
+        android:textSize="18sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_cityName"
+        tools:text="Céu limpo" />
+
+    <ImageView
+        android:id="@+id/icon_clothe"
+        android:layout_width="123.5dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="132.3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_weather_description"
+        app:srcCompat="@drawable/ic_cone_biquini_1" />
+
+    <TextView
+        android:id="@+id/text_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39.9dp"
+        android:layout_marginTop="159.6dp"
+        android:fontFamily="@font/montserrat_light"
+        android:lineSpacingExtra="18sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="82sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/icon_clothe"
+        app:layout_constraintTop_toBottomOf="@+id/text_weather_description"
+        tools:text="30" />
+
+    <TextView
+        android:id="@+id/text_degree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="18sp"
+        android:text="@string/degree"
+        android:textColor="@color/brownish_grey"
+        android:textSize="62sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/text_temperature"
+        app:layout_constraintTop_toTopOf="@+id/text_temperature" />
+
+    <TextView
+        android:id="@+id/text_feelsLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/feels_like"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toStartOf="@+id/text_temperature"
+        app:layout_constraintTop_toBottomOf="@+id/text_temperature" />
+
+    <TextView
+        android:id="@+id/text_feelsLike_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/text_feelsLike"
+        app:layout_constraintTop_toBottomOf="@+id/text_temperature"
+        tools:text="33" />
+
+    <TextView
+        android:id="@+id/text_degree2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/degree"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintStart_toEndOf="@+id/text_feelsLike_value"
+        app:layout_constraintTop_toTopOf="@+id/text_feelsLike_value" />
+
+
+    <ImageView
+        android:id="@+id/icon_umbrella"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="198.5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/icon_clothe"
+        app:srcCompat="@drawable/icon_umbrella" />
+
+    <TextView
+        android:id="@+id/text_percent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/percent"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/icon_umbrella"
+        app:layout_constraintStart_toEndOf="@+id/text_precipitation"
+        app:layout_constraintTop_toTopOf="@+id/text_precipitation" />
+
+    <TextView
+        android:id="@+id/text_precipitation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9.3dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/text_percent"
+        app:layout_constraintStart_toStartOf="@+id/icon_umbrella"
+        app:layout_constraintTop_toBottomOf="@+id/icon_umbrella"
+        tools:text="0" />
+
+    <ImageView
+        android:id="@+id/icon_maxMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70.3dp"
+        app:layout_constraintStart_toEndOf="@+id/icon_umbrella"
+        app:layout_constraintTop_toTopOf="@+id/icon_umbrella"
+        app:srcCompat="@drawable/icon_max_min" />
+
+    <TextView
+        android:id="@+id/text_temp_max"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/text_degree3"
+        app:layout_constraintStart_toStartOf="@+id/icon_maxMin"
+        app:layout_constraintTop_toTopOf="@+id/text_percent"
+        tools:text="4" />
+
+    <TextView
+        android:id="@+id/text_degree3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/degree"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/text_slash"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/text_temp_max"
+        app:layout_constraintTop_toTopOf="@+id/text_temp_max" />
+
+    <TextView
+        android:id="@+id/text_slash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/slash"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/text_temp_min"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/text_degree3"
+        app:layout_constraintTop_toTopOf="@+id/text_degree3" />
+
+    <TextView
+        android:id="@+id/text_temp_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/text_degree4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/text_slash"
+        app:layout_constraintTop_toTopOf="@+id/text_slash"
+        tools:text="34" />
+
+    <TextView
+        android:id="@+id/text_degree4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/degree"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/icon_maxMin"
+        app:layout_constraintStart_toEndOf="@+id/text_temp_min"
+        app:layout_constraintTop_toTopOf="@+id/text_temp_min" />
+
+    <ImageView
+        android:id="@+id/icon_windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="59.1dp"
+        app:layout_constraintStart_toEndOf="@+id/icon_maxMin"
+        app:layout_constraintTop_toTopOf="@+id/icon_maxMin"
+        app:srcCompat="@drawable/icon_wind" />
+
+    <TextView
+        android:id="@+id/text_windSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/text_kmhour"
+        app:layout_constraintStart_toStartOf="@+id/icon_windSpeed"
+        app:layout_constraintTop_toTopOf="@+id/text_degree4"
+        tools:text="23" />
+
+    <TextView
+        android:id="@+id/text_kmhour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/km_h"
+        android:textColor="@color/brownish_grey"
+        android:textSize="12sp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="@+id/icon_windSpeed"
+        app:layout_constraintStart_toEndOf="@+id/text_windSpeed"
+        app:layout_constraintTop_toTopOf="@+id/text_windSpeed" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 package com.olimpio.whattoweather.presentation.weather.data_source
 
-import com.olimpio.whattoweather.data.network.model.Weather
+import com.olimpio.whattoweather.data.network.response.APIResult
 
 interface WeatherDataSource {
-    fun getWeeklyWeather(lat: Double, lng: Double): List<Weather>
+    fun getWeeklyWeather(city: String, weatherCallback: (result: APIResult) -> Unit)
 }

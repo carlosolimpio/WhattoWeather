@@ -1,71 +1,77 @@
 package com.olimpio.whattoweather.data.data_source
 
+import android.content.Context
 import android.util.Log
 import com.olimpio.whattoweather.data.network.api.RetrofitManager
-import com.olimpio.whattoweather.data.network.model.Weather
+import com.olimpio.whattoweather.data.network.model.WeatherResponse
 import com.olimpio.whattoweather.data.network.response.WeatherForecast
+import com.olimpio.whattoweather.data.network.response.APIResult
 import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
+import com.olimpio.whattoweather.data.util.LocationConverter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class WeatherRemoteDataSource : WeatherDataSource {
+class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource {
+    override fun getWeeklyWeather(city: String, responseCallback: (result: APIResult) -> Unit) {
+        lateinit var currentWeatherResponse: WeatherResponse
+        lateinit var weeklyWeatherResponse: List<WeatherResponse>
 
-    override fun getWeeklyWeather(lat: Double, lng: Double) = fetchWeatherFromApi(lat, lng)
-
-    private fun fetchWeatherFromApi(lat: Double, lng: Double): List<Weather> {
-        lateinit var currentWeather: Weather
-        var weeklyWeather: List<Weather> = listOf()
+        val coord = parseCoordinateFromCityName(city, context)
 
         RetrofitManager.getOpenWeatherService()
-            .getCurrentWeatherForLocationCoordinates(lat, lng)
+            .getCurrentWeatherForLocationCoordinates(coord.latitude, coord.longitude)
             .enqueue(object : Callback<WeatherForecast> {
                 override fun onResponse(
-                    call: Call<WeatherForecast>,
-                    response: Response<WeatherForecast>
-                ) {
+                    call: Call<WeatherForecast>, response: Response<WeatherForecast>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            currentWeather = buildCurrentWeather(it)
-                            weeklyWeather = buildWeeklyWeather(it, currentWeather)
+                            currentWeatherResponse = buildCurrentWeather(it)
+                            weeklyWeatherResponse = buildWeeklyWeather(it, currentWeatherResponse)
+                            responseCallback(APIResult.Success(weeklyWeatherResponse))
                         }
-                    }
+                    } else responseCallback(APIResult.ApiError(response.code()))
                 }
 
                 override fun onFailure(call: Call<WeatherForecast>, t: Throwable) {
                     Log.d("olimpio", "onFailure: $t")
+                    responseCallback(APIResult.ServerError)
                 }
             })
-        return weeklyWeather
     }
 
-    private fun buildCurrentWeather(response: WeatherForecast): Weather {
-        return Weather(
+    private fun parseCoordinateFromCityName(city: String, context: Context) =
+        LocationConverter.convertCityNameToLatLng(context, city)
+
+    private fun buildCurrentWeather(response: WeatherForecast): WeatherResponse {
+        return WeatherResponse(
             response.hourly[0].temp.toDouble(),
             response.weekly[0].temp.maxTemp.toDouble(),
             response.weekly[0].temp.minTemp.toDouble(),
             response.hourly[0].feelsLike.toDouble(),
             response.hourly[0].windSpeed.toDouble(),
             response.hourly[0].probPrecipitation.toDouble(),
-            response.hourly[0].weatherDescription[0].description
+            response.hourly[0].weatherDescription[0].description,
+            response.hourly[0].weatherDescription[0].icon
         )
     }
 
     private fun buildWeeklyWeather(
         response: WeatherForecast,
-        currentWeather: Weather
-    ): List<Weather> {
-        val weekly = arrayListOf<Weather>(currentWeather)
+        currentWeatherResponse: WeatherResponse
+    ): List<WeatherResponse> {
+        val weekly = arrayListOf<WeatherResponse>(currentWeatherResponse)
         for (i in 1..6) {
             weekly.add(
-                i, Weather(
+                i, WeatherResponse(
                     response.weekly[i].temp.tempDay.toDouble(),
                     response.weekly[i].temp.maxTemp.toDouble(),
                     response.weekly[i].temp.minTemp.toDouble(),
                     response.weekly[i].feelsLike.feelsLike.toDouble(),
                     response.weekly[i].windSpeed.toDouble(),
                     response.weekly[i].probPrecipitation.toDouble(),
-                    response.weekly[i].weatherDescription[0].description
+                    response.weekly[i].weatherDescription[0].description,
+                    response.weekly[i].weatherDescription[0].icon
                 )
             )
         }

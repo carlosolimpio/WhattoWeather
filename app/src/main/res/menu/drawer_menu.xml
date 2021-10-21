@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--
+    <item
+        android:id="@+id/item_user_badges"
+        android:title="@string/my_badges"
+        android:icon="@drawable/ic_badge" />
+    <item
+        android:id="@+id/item_edituser_profile"
+        android:title="@string/edit_profile"
+        android:icon="@drawable/ic_edit" />-->
+</menu>
