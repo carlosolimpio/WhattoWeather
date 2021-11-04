@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="AppTheme.ActionBar.Transparent" parent="@style/Theme.AppCompat.DayNight">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="drawerArrowStyle">@style/DrawerHamburguerColor</item>
+    </style>
+    <style name="DrawerHamburguerColor" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@color/brownish_grey</item>
+    </style>
+
     <style name="style_temperature">
         <item name="android:fontFamily">@font/montserrat_light</item>
         <item name="android:textStyle">normal</item>

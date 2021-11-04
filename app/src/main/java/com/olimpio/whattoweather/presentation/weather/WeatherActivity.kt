@@ -26,6 +26,8 @@ class WeatherActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
         NavigationUI.setupWithNavController(binding.navView, navController)
         binding.navView.setNavigationItemSelectedListener(getNavigationItemSelectedListener())
+
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onSupportNavigateUp(): Boolean {
