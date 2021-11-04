@@ -8,25 +8,27 @@ import com.olimpio.whattoweather.data.network.response.WeatherForecast
 import com.olimpio.whattoweather.data.network.response.APIResult
 import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 import com.olimpio.whattoweather.data.util.LocationConverter
+import com.olimpio.whattoweather.util.City
+import com.olimpio.whattoweather.util.LatLng
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource {
-    override fun getWeeklyWeather(city: String, responseCallback: (result: APIResult) -> Unit) {
+class WeatherRemoteDataSourceImpl(private val context: Context) : WeatherDataSource {
+    override fun getWeeklyWeather(city: City, responseCallback: (result: APIResult) -> Unit) {
         lateinit var currentWeatherResponse: WeatherResponse
         lateinit var weeklyWeatherResponse: List<WeatherResponse>
 
-        val coord = parseCoordinateFromCityName(city, context)
+        val coord = parseLocationCoordinate(city, context)
 
         RetrofitManager.getOpenWeatherService()
-            .getCurrentWeatherForLocationCoordinates(coord.latitude, coord.longitude)
+            .getCurrentWeatherForLocationCoordinates(coord.coord.latitude, coord.coord.longitude)
             .enqueue(object : Callback<WeatherForecast> {
                 override fun onResponse(
                     call: Call<WeatherForecast>, response: Response<WeatherForecast>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            currentWeatherResponse = buildCurrentWeather(it)
+                            currentWeatherResponse = buildCurrentWeather(coord, it)
                             weeklyWeatherResponse = buildWeeklyWeather(it, currentWeatherResponse)
                             responseCallback(APIResult.Success(weeklyWeatherResponse))
                         }
@@ -40,11 +42,22 @@ class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource 
             })
     }
 
-    private fun parseCoordinateFromCityName(city: String, context: Context) =
-        LocationConverter.convertCityNameToLatLng(context, city)
+    private fun parseLocationCoordinate(city: City, context: Context) : City {
+       return when {
+            city.name.isNotBlank() -> {
+                City(city.name, LocationConverter.convertCityNameToLatLng(context, city.name))
+            }
+            LatLng.isValidCoord(city.coord.latitude, city.coord.longitude) -> {
+                val coordinate = LatLng(city.coord.latitude, city.coord.longitude)
+                City(LocationConverter.convertLatLngToCityName(context, coordinate), coordinate)
+            }
+           else -> City()
+       }
+    }
 
-    private fun buildCurrentWeather(response: WeatherForecast): WeatherResponse {
+    private fun buildCurrentWeather(city: City, response: WeatherForecast): WeatherResponse {
         return WeatherResponse(
+            city,
             response.hourly[0].temp.toDouble(),
             response.weekly[0].temp.maxTemp.toDouble(),
             response.weekly[0].temp.minTemp.toDouble(),
@@ -64,6 +77,7 @@ class WeatherRemoteDataSource(private val context: Context) : WeatherDataSource 
         for (i in 1..6) {
             weekly.add(
                 i, WeatherResponse(
+                    currentWeatherResponse.city,
                     response.weekly[i].temp.tempDay.toDouble(),
                     response.weekly[i].temp.maxTemp.toDouble(),
                     response.weekly[i].temp.minTemp.toDouble(),

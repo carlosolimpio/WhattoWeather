@@ -8,18 +8,19 @@ import com.olimpio.whattoweather.presentation.weather.model.Weather
 import com.olimpio.whattoweather.presentation.weather.repository.WeatherRepository
 import com.olimpio.whattoweather.presentation.weather.response.WeatherResult
 import com.olimpio.whattoweather.presentation.weather.response.WeatherResult.*
+import com.olimpio.whattoweather.util.City
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 
 class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : WeatherRepository {
-    override fun getWeeklyWeather(city: String, weatherCallback: (result: WeatherResult) -> Unit) =
+    override fun getWeeklyWeather(city: City, weatherCallback: (result: WeatherResult) -> Unit) =
         remoteDataSource.getWeeklyWeather(city) { response ->
             when (response) {
                 is APIResult.Success -> {
                     weatherCallback(
-                        Success(parseWeatherResponse(city, response.weeklyWeatherResponse)))
+                        Success(parseWeatherResponse(response.weeklyWeatherResponse)))
                 }
                 is APIResult.ApiError -> {
                     weatherCallback(ApiError(response.statusCode))
@@ -31,15 +32,14 @@ class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : W
         }
 
     private fun parseWeatherResponse(
-        city: String,
         weeklyWeatherResponse: List<WeatherResponse>
     ): List<Weather> {
         val weatherList = arrayListOf<Weather>()
         weeklyWeatherResponse.forEach { weather ->
             weatherList.add(
                 Weather(
-                    date = getCurrentDate(), // need improvement for the next 7 days
-                    city = city.capitalize(),
+                    date = getCurrentDate(), // TODO: need improvement for the next 7 days
+                    cityName = weather.city.name.capitalize(),
                     description = weather.description.capitalize(),
                     temperature = weather.temperature.roundToInt().toString(),
                     feelsLike = weather.feelsLike.roundToInt().toString(),
