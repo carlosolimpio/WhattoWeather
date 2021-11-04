@@ -28,7 +28,7 @@ class WeatherRemoteDataSourceImpl(private val context: Context) : WeatherDataSou
                     call: Call<WeatherForecast>, response: Response<WeatherForecast>) {
                     if (response.isSuccessful) {
                         response.body()?.let {
-                            currentWeatherResponse = buildCurrentWeather(it)
+                            currentWeatherResponse = buildCurrentWeather(coord, it)
                             weeklyWeatherResponse = buildWeeklyWeather(it, currentWeatherResponse)
                             responseCallback(APIResult.Success(weeklyWeatherResponse))
                         }
@@ -43,26 +43,21 @@ class WeatherRemoteDataSourceImpl(private val context: Context) : WeatherDataSou
     }
 
     private fun parseLocationCoordinate(city: City, context: Context) : City {
-        val cityObject = City()
-
-        when {
+       return when {
             city.name.isNotBlank() -> {
-                cityObject.name = city.name
-                cityObject.coord = LocationConverter.convertCityNameToLatLng(context, city.name)
+                City(city.name, LocationConverter.convertCityNameToLatLng(context, city.name))
             }
             LatLng.isValidCoord(city.coord.latitude, city.coord.longitude) -> {
                 val coordinate = LatLng(city.coord.latitude, city.coord.longitude)
-                cityObject.coord = coordinate
-                cityObject.name = LocationConverter.convertLatLngToCityName(context, coordinate)
+                City(LocationConverter.convertLatLngToCityName(context, coordinate), coordinate)
             }
-        }
-
-        return cityObject
+           else -> City()
+       }
     }
 
-
-    private fun buildCurrentWeather(response: WeatherForecast): WeatherResponse {
+    private fun buildCurrentWeather(city: City, response: WeatherForecast): WeatherResponse {
         return WeatherResponse(
+            city,
             response.hourly[0].temp.toDouble(),
             response.weekly[0].temp.maxTemp.toDouble(),
             response.weekly[0].temp.minTemp.toDouble(),
@@ -82,6 +77,7 @@ class WeatherRemoteDataSourceImpl(private val context: Context) : WeatherDataSou
         for (i in 1..6) {
             weekly.add(
                 i, WeatherResponse(
+                    currentWeatherResponse.city,
                     response.weekly[i].temp.tempDay.toDouble(),
                     response.weekly[i].temp.maxTemp.toDouble(),
                     response.weekly[i].temp.minTemp.toDouble(),

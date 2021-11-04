@@ -10,7 +10,9 @@ class LocationViewModel(private val locationRepository: LocationRepository) : Vi
     val locationLiveData: MutableLiveData<LatLng> = MutableLiveData()
 
     fun updateCurrentLocation() {
-        locationLiveData.value = locationRepository.getDeviceLocation()
+        locationRepository.getDeviceLocation { coord ->
+            locationLiveData.value = coord
+        }
     }
 
     class LocationViewModelFactory(

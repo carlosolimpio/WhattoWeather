@@ -2,6 +2,7 @@ package com.olimpio.whattoweather.data.util
 
 import android.content.Context
 import android.location.Geocoder
+import android.util.Log
 import com.olimpio.whattoweather.util.LatLng
 import java.util.*
 
@@ -18,7 +19,7 @@ object LocationConverter {
         return if (Geocoder.isPresent()) {
             val geo = Geocoder(context, Locale.getDefault())
             val addr = geo.getFromLocation(coord.latitude, coord.longitude, 1)
-            addr[0].getAddressLine(0)
+            addr[0].subAdminArea
         } else ""
     }
 }

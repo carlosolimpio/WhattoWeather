@@ -41,9 +41,39 @@ class CurrentWeatherFragment : Fragment() {
         checkPermissions()
         initViewModels()
         observeViewModels()
+        locationViewModel.updateCurrentLocation()
+    }
 
-        val city = City("Garanhuns")
-        weatherViewModel.getWeeklyWeather(city)
+    private fun initViewModels() {
+        // TODO: create a Repository and DataSource providers
+        val locRepository = LocationRepositoryImpl(
+            LocationDataSourceImpl(LocationServices.getFusedLocationProviderClient(requireActivity()))
+        )
+        val weatherRepository = WeatherRepositoryImpl(WeatherRemoteDataSourceImpl(requireContext()))
+
+
+        locationViewModel = ViewModelProvider(
+            this,
+            LocationViewModel.LocationViewModelFactory(locRepository))
+            .get(LocationViewModel::class.java)
+
+        weatherViewModel = ViewModelProvider(
+            this,
+            WeatherViewModel.WeatherViewModelFactory(weatherRepository))
+            .get(WeatherViewModel::class.java)
+    }
+
+    private fun observeViewModels() {
+        // Observe
+        locationViewModel.locationLiveData.observe(viewLifecycleOwner) { coord ->
+            Log.d("olimpio", "onViewCreated: coordenadas=${coord}")
+            weatherViewModel.getWeeklyWeather(City("", coord))
+        }
+
+        weatherViewModel.weeklyWeatherLiveData.observe(viewLifecycleOwner) { weeklyWeather ->
+            Log.d("olimpio", "onCreate: $weeklyWeather")
+            setUpCurrentWeatherViews(weeklyWeather[0])
+        }
     }
 
     private fun setUpCurrentWeatherViews(weather: Weather) {
@@ -58,40 +88,8 @@ class CurrentWeatherFragment : Fragment() {
             textTempMin.text = weather.tempMin
             textWindSpeed.text = weather.windSpeed
             iconClothe.setImageResource(weather.icon)
-        }
 
-        // TODO: see here
-        binding.textCityName.setOnClickListener { locationViewModel.updateCurrentLocation() }
-    }
-
-    private fun initViewModels() {
-        // TODO: create a Repository and DataSource providers
-        val weatherRepository = WeatherRepositoryImpl(WeatherRemoteDataSourceImpl(requireContext()))
-
-        val locRepository = LocationRepositoryImpl(
-            LocationDataSourceImpl(LocationServices.getFusedLocationProviderClient(requireActivity()))
-        )
-
-        weatherViewModel = ViewModelProvider(
-            this,
-            WeatherViewModel.WeatherViewModelFactory(weatherRepository))
-            .get(WeatherViewModel::class.java)
-
-        locationViewModel = ViewModelProvider(
-            this,
-            LocationViewModel.LocationViewModelFactory(locRepository))
-            .get(LocationViewModel::class.java)
-    }
-
-    private fun observeViewModels() {
-        // Observe
-        weatherViewModel.weeklyWeatherLiveData.observe(viewLifecycleOwner) { weeklyWeather ->
-            Log.d("olimpio", "onCreate: $weeklyWeather")
-            setUpCurrentWeatherViews(weeklyWeather[0])
-        }
-
-        locationViewModel.locationLiveData.observe(viewLifecycleOwner) { coord ->
-            Log.d("olimpio", "onViewCreated: coordenadas=${coord}")
+//            textCityName.setOnClickListener {  }
         }
     }
 

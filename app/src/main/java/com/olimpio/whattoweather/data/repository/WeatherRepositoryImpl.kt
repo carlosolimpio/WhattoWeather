@@ -20,7 +20,7 @@ class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : W
             when (response) {
                 is APIResult.Success -> {
                     weatherCallback(
-                        Success(parseWeatherResponse(city.name, response.weeklyWeatherResponse)))
+                        Success(parseWeatherResponse(response.weeklyWeatherResponse)))
                 }
                 is APIResult.ApiError -> {
                     weatherCallback(ApiError(response.statusCode))
@@ -32,7 +32,6 @@ class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : W
         }
 
     private fun parseWeatherResponse(
-        city: String,
         weeklyWeatherResponse: List<WeatherResponse>
     ): List<Weather> {
         val weatherList = arrayListOf<Weather>()
@@ -40,7 +39,7 @@ class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : W
             weatherList.add(
                 Weather(
                     date = getCurrentDate(), // TODO: need improvement for the next 7 days
-                    cityName = city.capitalize(),
+                    cityName = weather.city.name.capitalize(),
                     description = weather.description.capitalize(),
                     temperature = weather.temperature.roundToInt().toString(),
                     feelsLike = weather.feelsLike.roundToInt().toString(),

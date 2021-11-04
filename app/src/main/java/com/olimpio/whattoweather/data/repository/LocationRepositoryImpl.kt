@@ -5,7 +5,9 @@ import com.olimpio.whattoweather.presentation.location.repository.LocationReposi
 import com.olimpio.whattoweather.util.LatLng
 
 class LocationRepositoryImpl(private val locDataSource: LocationDataSource) : LocationRepository {
-    override fun getDeviceLocation(): LatLng {
-        return locDataSource.getCurrentLocation()
+    override fun getDeviceLocation(locationCallback: (coord: LatLng) -> Unit) {
+        locDataSource.getCurrentLocation { coord ->
+            locationCallback(coord)
+        }
     }
 }
