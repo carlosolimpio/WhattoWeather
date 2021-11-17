@@ -35,10 +35,10 @@ class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : W
         weeklyWeatherResponse: List<WeatherResponse>
     ): List<Weather> {
         val weatherList = arrayListOf<Weather>()
-        weeklyWeatherResponse.forEach { weather ->
+        weeklyWeatherResponse.forEachIndexed { index, weather ->
             weatherList.add(
                 Weather(
-                    date = getCurrentDate(), // TODO: need improvement for the next 7 days
+                    date = getCurrentDate(index.toLong()),
                     cityName = weather.city.name.capitalize(),
                     description = weather.description.capitalize(),
                     temperature = weather.temperature.roundToInt().toString(),
@@ -55,9 +55,8 @@ class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : W
         return weatherList
     }
 
-    //TODO: need to implement the dates for the next 7 days
-    private fun getCurrentDate(): String {
-        return ZonedDateTime.now().format(
+    private fun getCurrentDate(dayCount: Long): String {
+        return ZonedDateTime.now().plusDays(dayCount).format(
             DateTimeFormatter.ofPattern("EEEE, dd 'de' MMMM")
                 .withLocale(Locale("pt", "BR"))
         ).capitalize()
