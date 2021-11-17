@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.location.LocationServices
+import com.olimpio.whattoweather.R
 import com.olimpio.whattoweather.data.data_source.LocationDataSourceImpl
 import com.olimpio.whattoweather.data.data_source.WeatherRemoteDataSourceImpl
 import com.olimpio.whattoweather.data.repository.LocationRepositoryImpl
@@ -37,7 +38,6 @@ class CurrentWeatherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         checkPermissions()
         initViewModels()
         observeViewModels()
@@ -50,7 +50,6 @@ class CurrentWeatherFragment : Fragment() {
             LocationDataSourceImpl(LocationServices.getFusedLocationProviderClient(requireActivity()))
         )
         val weatherRepository = WeatherRepositoryImpl(WeatherRemoteDataSourceImpl(requireContext()))
-
 
         locationViewModel = ViewModelProvider(
             this,
@@ -73,6 +72,9 @@ class CurrentWeatherFragment : Fragment() {
         weatherViewModel.weeklyWeatherLiveData.observe(viewLifecycleOwner) { weeklyWeather ->
             Log.d("olimpio", "onCreate: $weeklyWeather")
             setUpCurrentWeatherViews(weeklyWeather[0])
+
+            val weeklyFragment = WeeklyWeatherFragment(weeklyWeather)
+            setUpWeeklyWeatherViews(weeklyWeather, weeklyFragment)
         }
     }
 
@@ -91,6 +93,31 @@ class CurrentWeatherFragment : Fragment() {
 
 //            textCityName.setOnClickListener {  }
         }
+    }
+
+    private fun setUpWeeklyWeatherViews(weatherList: List<Weather>, weeklyFragment: WeeklyWeatherFragment) {
+        binding.switchWeeklyWeather.setOnCheckedChangeListener { _, isChecked ->
+            Log.d("olimpio", "setUpWeeklyWeatherViews: checked = $isChecked")
+
+            if (isChecked) showWeeklyWeatherFragment(weeklyFragment)
+            else hideWeeklyWeatherFragment(weeklyFragment)
+        }
+    }
+
+    private fun showWeeklyWeatherFragment(fragment: WeeklyWeatherFragment) {
+        Log.d("olimpio", "showWeeklyWeatherFragment")
+        if (!fragment.isAdded) {
+            childFragmentManager.beginTransaction()
+                .add(R.id.week_fragment_container, fragment)
+                .commit()
+        } else {
+            childFragmentManager.beginTransaction().show(fragment).commit()
+        }
+    }
+
+    private fun hideWeeklyWeatherFragment(fragment: WeeklyWeatherFragment) {
+        Log.d("olimpio", "hideWeeklyWeatherFragment")
+        childFragmentManager.beginTransaction().hide(fragment).commit()
     }
 
     private fun checkPermissions() {

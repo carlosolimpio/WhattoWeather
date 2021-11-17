@@ -35,13 +35,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="19dp"
+        android:clickable="true"
+        android:focusable="true"
         android:fontFamily="@font/montserrat_medium"
         android:lineSpacingExtra="8sp"
+        android:textAlignment="center"
         android:textColor="@color/brownish_grey"
         android:textSize="34sp"
         android:textStyle="normal"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_date"
@@ -142,6 +143,15 @@
         app:layout_constraintStart_toEndOf="@+id/text_feelsLike_value"
         app:layout_constraintTop_toTopOf="@+id/text_feelsLike_value" />
 
+    <FrameLayout
+        android:id="@+id/week_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="78dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_feelsLike">
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/icon_umbrella"
@@ -302,4 +312,12 @@
         app:layout_constraintStart_toEndOf="@+id/text_windSpeed"
         app:layout_constraintTop_toTopOf="@+id/text_windSpeed" />
 
+    <Switch
+        android:id="@+id/switch_weekly_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24.8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_precipitation" />
 </androidx.constraintlayout.widget.ConstraintLayout>
