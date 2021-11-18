@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.olimpio.whattoweather.R
 import com.olimpio.whattoweather.databinding.FragmentWeeklyWeatherBinding
 import com.olimpio.whattoweather.databinding.LayoutWeekDayBinding
 import com.olimpio.whattoweather.presentation.weather.model.Weather
@@ -44,6 +45,11 @@ class WeeklyWeatherFragment(val weeklyWeather: List<Weather>) : Fragment() {
         layout.apply {
             textWeekDay.text = weather.date.substring(0, 3).toUpperCase()
             textWeekTemperature.text = weather.temperature + "º"
+        }
+
+        layout.layoutWeekDayId.setOnClickListener { view ->
+            (parentFragment as CurrentWeatherFragment).setUpCurrentWeatherViews(weather)
+            view.setBackgroundResource(R.drawable.layout_rounded_corners)
         }
     }
 }

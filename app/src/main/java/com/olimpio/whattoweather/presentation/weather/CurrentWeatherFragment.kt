@@ -78,7 +78,7 @@ class CurrentWeatherFragment : Fragment() {
         }
     }
 
-    private fun setUpCurrentWeatherViews(weather: Weather) {
+    fun setUpCurrentWeatherViews(weather: Weather) {
         binding.apply {
             textDate.text = weather.date
             textCityName.text = weather.cityName
@@ -99,8 +99,12 @@ class CurrentWeatherFragment : Fragment() {
         binding.switchWeeklyWeather.setOnCheckedChangeListener { _, isChecked ->
             Log.d("olimpio", "setUpWeeklyWeatherViews: checked = $isChecked")
 
-            if (isChecked) showWeeklyWeatherFragment(weeklyFragment)
-            else hideWeeklyWeatherFragment(weeklyFragment)
+            if (isChecked) {
+                showWeeklyWeatherFragment(weeklyFragment)
+            } else {
+                hideWeeklyWeatherFragment(weeklyFragment)
+                setUpCurrentWeatherViews(weatherList[0])
+            }
         }
     }
 
