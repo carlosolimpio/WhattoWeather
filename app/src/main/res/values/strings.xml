@@ -7,4 +7,5 @@
     <string name="percent">%</string>
     <string name="slash">/</string>
     <string name="km_h">km/h</string>
+    <string name="add_new_location">[+] Adicionar nova localização</string>
 </resources>

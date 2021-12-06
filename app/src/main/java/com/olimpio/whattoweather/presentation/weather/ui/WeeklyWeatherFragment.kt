@@ -1,4 +1,4 @@
-package com.olimpio.whattoweather.presentation.weather
+package com.olimpio.whattoweather.presentation.weather.ui
 
 import android.os.Bundle
 import android.util.Log

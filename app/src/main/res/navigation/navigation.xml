@@ -7,8 +7,17 @@
 
     <fragment
         android:id="@+id/currentWeatherFragment"
-        android:name="com.olimpio.whattoweather.presentation.weather.CurrentWeatherFragment"
+        android:name="com.olimpio.whattoweather.presentation.weather.ui.CurrentWeatherFragment"
         app:backgroundColor="@color/white"
         android:label="CurrentWeatherFragment"
-        tools:layout="@layout/fragment_current_weather" />
+        tools:layout="@layout/fragment_current_weather" >
+        <action
+            android:id="@+id/action_currentWeatherFragment_to_favoritePlacesListFragment"
+            app:destination="@id/favoritePlacesListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritePlacesListFragment"
+        android:name="com.olimpio.whattoweather.presentation.weather.ui.favoriteplaces.FavoritePlacesListFragment"
+        android:label="fragment_favorite_places_list"
+        tools:layout="@layout/fragment_favorite_places_list" />
 </navigation>

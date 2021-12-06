@@ -7,7 +7,7 @@ import com.olimpio.whattoweather.presentation.location.repository.LocationReposi
 import com.olimpio.whattoweather.util.LatLng
 
 class LocationViewModel(private val locationRepository: LocationRepository) : ViewModel() {
-    val locationLiveData: MutableLiveData<LatLng> = MutableLiveData()
+    val locationLiveData: MutableLiveData<LatLng> by lazy { MutableLiveData<LatLng>() }
 
     fun updateCurrentLocation() {
         locationRepository.getDeviceLocation { coord ->

@@ -79,14 +79,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="39.9dp"
-        android:layout_marginTop="159.6dp"
         android:fontFamily="@font/montserrat_light"
         android:lineSpacingExtra="18sp"
         android:textColor="@color/brownish_grey"
         android:textSize="82sp"
         android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/icon_clothe"
         app:layout_constraintStart_toEndOf="@+id/icon_clothe"
-        app:layout_constraintTop_toBottomOf="@+id/text_weather_description"
+        app:layout_constraintTop_toTopOf="@+id/icon_clothe"
         tools:text="30" />
 
     <TextView

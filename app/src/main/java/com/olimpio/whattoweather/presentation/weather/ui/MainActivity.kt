@@ -1,4 +1,4 @@
-package com.olimpio.whattoweather.presentation.weather
+package com.olimpio.whattoweather.presentation.weather.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +10,7 @@ import com.google.android.material.navigation.NavigationView
 import com.olimpio.whattoweather.R
 import com.olimpio.whattoweather.databinding.ActivityMainBinding
 
-class WeatherActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout

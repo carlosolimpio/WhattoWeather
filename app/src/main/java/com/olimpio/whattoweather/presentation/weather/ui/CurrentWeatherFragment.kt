@@ -1,4 +1,4 @@
-package com.olimpio.whattoweather.presentation.weather
+package com.olimpio.whattoweather.presentation.weather.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -20,6 +20,8 @@ import com.olimpio.whattoweather.data.repository.WeatherRepositoryImpl
 import com.olimpio.whattoweather.databinding.FragmentCurrentWeatherBinding
 import com.olimpio.whattoweather.presentation.location.LocationViewModel
 import com.olimpio.whattoweather.presentation.weather.model.Weather
+import com.olimpio.whattoweather.presentation.weather.ui.favoriteplaces.FavoritePlacesListFragment
+import com.olimpio.whattoweather.presentation.weather.viewmodel.WeatherViewModel
 import com.olimpio.whattoweather.util.City
 
 class CurrentWeatherFragment : Fragment() {
@@ -45,7 +47,7 @@ class CurrentWeatherFragment : Fragment() {
     }
 
     private fun initViewModels() {
-        // TODO: create a Repository and DataSource providers
+        // TODO: create a Repository and DataSource providers to inject here
         val locRepository = LocationRepositoryImpl(
             LocationDataSourceImpl(LocationServices.getFusedLocationProviderClient(requireActivity()))
         )
@@ -91,8 +93,14 @@ class CurrentWeatherFragment : Fragment() {
             textWindSpeed.text = weather.windSpeed
             iconClothe.setImageResource(weather.icon)
 
-//            textCityName.setOnClickListener {  }
+            textCityName.setOnClickListener { showFavoritePlacesFragment() }
         }
+    }
+
+    private fun showFavoritePlacesFragment() {
+        Log.d("olimpio", "showWeeklyWeatherFragment")
+
+
     }
 
     private fun setUpWeeklyWeatherViews(weatherList: List<Weather>, weeklyFragment: WeeklyWeatherFragment) {

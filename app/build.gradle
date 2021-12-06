@@ -1,10 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
-    compileSdk 30
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.olimpio.whattoweather"
@@ -57,6 +58,8 @@ dependencies {
 
     // Location
     implementation "com.google.android.gms:play-services-location:$locationVersion"
+
+    implementation "info.hoang8f:android-segmented:1.0.6"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
