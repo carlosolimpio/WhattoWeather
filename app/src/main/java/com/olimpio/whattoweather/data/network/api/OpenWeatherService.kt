@@ -1,7 +1,7 @@
 package com.olimpio.whattoweather.data.network.api
 
 import com.olimpio.whattoweather.data.network.api.Constants.OPEN_WEATHER_KEY
-import com.olimpio.whattoweather.data.network.response.WeatherForecast
+import com.olimpio.whattoweather.data.network.dto.WeatherForecast
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

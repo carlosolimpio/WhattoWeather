@@ -5,24 +5,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.olimpio.whattoweather.presentation.weather.model.Weather
 import com.olimpio.whattoweather.presentation.weather.repository.WeatherRepository
-import com.olimpio.whattoweather.presentation.weather.response.WeatherResult.*
+import com.olimpio.whattoweather.presentation.weather.response.WeatherCallbackResult.*
 import com.olimpio.whattoweather.util.City
 
 class WeatherViewModel(private val weatherRepository: WeatherRepository) : ViewModel() {
-    val weeklyWeatherLiveData: MutableLiveData<List<Weather>> by lazy {
+    val remoteWeeklyWeatherLiveData: MutableLiveData<List<Weather>> by lazy {
         MutableLiveData()
     }
+
+    val localWeeklyWeatherLiveData: MutableLiveData<Weather> by lazy { MutableLiveData() }
 
         fun getWeeklyWeather(city: City) {
             weatherRepository.getWeeklyWeather(city) { result ->
                 when (result) {
                     is Success -> {
-                        weeklyWeatherLiveData.value = result.weeklyWeatherResponse
+                        remoteWeeklyWeatherLiveData.value = result.weeklyWeatherResponse
                     }
-                    is ApiError -> {
+                    is Failure -> {
 
                     }
-                    is ServerError -> {
+                    is OtherError -> {
 
                     }
                 }

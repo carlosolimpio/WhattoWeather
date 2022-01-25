@@ -1,4 +1,4 @@
-package com.olimpio.whattoweather.data.network.model
+package com.olimpio.whattoweather.data.data_source
 
 import com.olimpio.whattoweather.util.City
 

@@ -1,13 +1,13 @@
 package com.olimpio.whattoweather.data.repository
 
 import com.olimpio.whattoweather.R
-import com.olimpio.whattoweather.data.network.model.WeatherResponse
-import com.olimpio.whattoweather.data.network.response.APIResult
+import com.olimpio.whattoweather.data.data_source.WeatherResponse
+import com.olimpio.whattoweather.data.util.DataResult
 import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 import com.olimpio.whattoweather.presentation.weather.model.Weather
 import com.olimpio.whattoweather.presentation.weather.repository.WeatherRepository
-import com.olimpio.whattoweather.presentation.weather.response.WeatherResult
-import com.olimpio.whattoweather.presentation.weather.response.WeatherResult.*
+import com.olimpio.whattoweather.presentation.weather.response.WeatherCallbackResult
+import com.olimpio.whattoweather.presentation.weather.response.WeatherCallbackResult.*
 import com.olimpio.whattoweather.util.City
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -15,18 +15,18 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : WeatherRepository {
-    override fun getWeeklyWeather(city: City, weatherCallback: (result: WeatherResult) -> Unit) =
+    override fun getWeeklyWeather(city: City, weatherCallback: (result: WeatherCallbackResult) -> Unit) =
         remoteDataSource.getWeeklyWeather(city) { response ->
             when (response) {
-                is APIResult.Success -> {
+                is DataResult.Success -> {
                     weatherCallback(
                         Success(parseWeatherResponse(response.weeklyWeatherResponse)))
                 }
-                is APIResult.ApiError -> {
-                    weatherCallback(ApiError(response.statusCode))
+                is DataResult.Error -> {
+                    weatherCallback(Failure(response.statusCode))
                 }
-                is APIResult.ServerError -> {
-                    weatherCallback(ServerError)
+                is DataResult.OtherError -> {
+                    weatherCallback(OtherError)
                 }
             }
         }

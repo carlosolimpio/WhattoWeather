@@ -1,4 +1,4 @@
-package com.olimpio.whattoweather.data.network.response
+package com.olimpio.whattoweather.data.network.dto
 
 import com.google.gson.annotations.SerializedName
 

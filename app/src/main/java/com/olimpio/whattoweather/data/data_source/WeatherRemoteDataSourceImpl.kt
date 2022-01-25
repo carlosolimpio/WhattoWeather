@@ -3,9 +3,8 @@ package com.olimpio.whattoweather.data.data_source
 import android.content.Context
 import android.util.Log
 import com.olimpio.whattoweather.data.network.api.RetrofitManager
-import com.olimpio.whattoweather.data.network.model.WeatherResponse
-import com.olimpio.whattoweather.data.network.response.WeatherForecast
-import com.olimpio.whattoweather.data.network.response.APIResult
+import com.olimpio.whattoweather.data.network.dto.WeatherForecast
+import com.olimpio.whattoweather.data.util.DataResult
 import com.olimpio.whattoweather.presentation.weather.data_source.WeatherDataSource
 import com.olimpio.whattoweather.data.util.LocationConverter
 import com.olimpio.whattoweather.util.City
@@ -15,7 +14,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class WeatherRemoteDataSourceImpl(private val context: Context) : WeatherDataSource {
-    override fun getWeeklyWeather(city: City, responseCallback: (result: APIResult) -> Unit) {
+    override fun getWeeklyWeather(city: City, responseCallback: (result: DataResult) -> Unit) {
         lateinit var currentWeatherResponse: WeatherResponse
         lateinit var weeklyWeatherResponse: List<WeatherResponse>
 
@@ -30,14 +29,14 @@ class WeatherRemoteDataSourceImpl(private val context: Context) : WeatherDataSou
                         response.body()?.let {
                             currentWeatherResponse = buildCurrentWeather(coord, it)
                             weeklyWeatherResponse = buildWeeklyWeather(it, currentWeatherResponse)
-                            responseCallback(APIResult.Success(weeklyWeatherResponse))
+                            responseCallback(DataResult.Success(weeklyWeatherResponse))
                         }
-                    } else responseCallback(APIResult.ApiError(response.code()))
+                    } else responseCallback(DataResult.Error(response.code()))
                 }
 
                 override fun onFailure(call: Call<WeatherForecast>, t: Throwable) {
                     Log.d("olimpio", "onFailure: $t")
-                    responseCallback(APIResult.ServerError)
+                    responseCallback(DataResult.OtherError)
                 }
             })
     }
