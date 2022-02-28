@@ -9,12 +9,21 @@ import com.olimpio.whattoweather.presentation.weather.repository.WeatherReposito
 import com.olimpio.whattoweather.presentation.weather.response.WeatherCallbackResult
 import com.olimpio.whattoweather.presentation.weather.response.WeatherCallbackResult.*
 import com.olimpio.whattoweather.util.City
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 
 class WeatherRepositoryImpl(private val remoteDataSource: WeatherDataSource) : WeatherRepository {
+    override suspend fun getWeeklyWeather(city: City): List<Weather> {
+        withContext(Dispatchers.IO) {
+            // make the api call
+            // return the value
+        }
+    }
+
     override fun getWeeklyWeather(city: City, weatherCallback: (result: WeatherCallbackResult) -> Unit) =
         remoteDataSource.getWeeklyWeather(city) { response ->
             when (response) {

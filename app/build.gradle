@@ -66,6 +66,9 @@ dependencies {
     // Location
     implementation "com.google.android.gms:play-services-location:$locationVersion"
 
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+
     implementation "info.hoang8f:android-segmented:1.0.6"
 
     testImplementation 'junit:junit:4.13.2'
